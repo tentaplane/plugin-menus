@@ -1,0 +1,28 @@
+{
+    "name": "tentapress/menus",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "tentapress/system": "*",
+        "tentapress/admin-shell": "*",
+        "tentapress/users": "*",
+        "tentapress/pages": "*",
+        "tentapress/posts": "*",
+        "tentapress/settings": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "TentaPress\\Menus\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TentaPress\\Menus\\MenusServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
