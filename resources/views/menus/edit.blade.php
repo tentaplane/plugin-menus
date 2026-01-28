@@ -46,126 +46,115 @@
         $assignments = is_array($locationAssignments ?? null) ? $locationAssignments : [];
     @endphp
 
-    <div class="tp-page-header">
-        <div>
-            <h1 class="tp-page-title">Edit Menu</h1>
-            <p class="tp-description">
-                <span class="font-semibold">{{ $menu->name }}</span>
-                <span class="tp-muted">— {{ $menu->slug }}</span>
-            </p>
+    <div class="tp-editor space-y-6">
+        <div class="tp-page-header">
+            <div>
+                <h1 class="tp-page-title">Edit Menu</h1>
+                <p class="tp-description">
+                    <span class="font-semibold">{{ $menu->name }}</span>
+                    <span class="tp-muted">— {{ $menu->slug }}</span>
+                </p>
+            </div>
         </div>
 
-        <div class="flex gap-2">
-            <a href="{{ route('tp.menus.index') }}" class="tp-button-secondary">Back</a>
-            <form
-                method="POST"
-                action="{{ route('tp.menus.destroy', ['menu' => $menu->id]) }}"
-                onsubmit="return confirm('Delete this menu? This cannot be undone.');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="tp-button-danger">Delete</button>
-            </form>
-        </div>
-    </div>
+        <form
+            method="POST"
+            action="{{ route('tp.menus.update', ['menu' => $menu->id]) }}"
+            id="menu-form"
+            class="space-y-6">
+            @csrf
+            @method('PUT')
 
-    <form
-        method="POST"
-        action="{{ route('tp.menus.update', ['menu' => $menu->id]) }}"
-        id="menu-form"
-        class="space-y-5">
-        @csrf
-        @method('PUT')
-
-        <div class="grid grid-cols-1 gap-5 lg:grid-cols-4">
-            <div class="space-y-5 lg:col-span-3">
-                <div class="tp-metabox">
-                    <div class="tp-metabox__title">Menu details</div>
-                    <div class="tp-metabox__body grid grid-cols-1 gap-4 lg:grid-cols-2">
-                        <div class="tp-field">
-                            <label class="tp-label">Name</label>
-                            <input name="name" class="tp-input" value="{{ old('name', $menu->name) }}" required />
-                        </div>
-                        <div class="tp-field">
-                            <label class="tp-label">Slug</label>
-                            <input
-                                name="slug"
-                                class="tp-input"
-                                value="{{ old('slug', $menu->slug) }}"
-                                pattern="[a-z0-9-]+" />
-                            <div class="tp-help">Lowercase letters, numbers, and dashes only.</div>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
+                <div class="space-y-6 lg:col-span-3">
+                    <div class="tp-metabox">
+                        <div class="tp-metabox__title">Menu details</div>
+                        <div class="tp-metabox__body grid grid-cols-1 gap-4 lg:grid-cols-2">
+                            <div class="tp-field">
+                                <label class="tp-label">Name</label>
+                                <input name="name" class="tp-input" value="{{ old('name', $menu->name) }}" required />
+                            </div>
+                            <div class="tp-field">
+                                <label class="tp-label">Slug</label>
+                                <input
+                                    name="slug"
+                                    class="tp-input"
+                                    value="{{ old('slug', $menu->slug) }}"
+                                    pattern="[a-z0-9-]+" />
+                                <div class="tp-help">Lowercase letters, numbers, and dashes only.</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div
-                    class="tp-metabox"
-                    x-data="tpMenuEditor({
-                                initialItems: @js($itemsArray),
-                                pages: @js($pagesArray),
-                                posts: @js($postsArray),
-                                blogBase: @js($blogBase),
-                            })"
-                    x-init="init()">
-                    <div class="tp-metabox__title">Menu items</div>
-                    <div class="tp-metabox__body space-y-5">
-                        <div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
-                            <div class="space-y-2 rounded border border-black/10 bg-white p-3">
-                                <div class="text-sm font-semibold">Custom link</div>
-                                <div class="space-y-2">
-                                    <input class="tp-input" placeholder="Title" x-model="addTitle" />
-                                    <input class="tp-input" placeholder="/path or https://..." x-model="addUrl" />
-                                    <select class="tp-select" x-model="addTarget">
-                                        <option value="">Same tab</option>
-                                        <option value="_blank">New tab</option>
-                                    </select>
-                                    <button type="button" class="tp-button-secondary" @click="addCustom()">
-                                        Add link
-                                    </button>
+                    <div
+                        class="tp-metabox"
+                        x-data="tpMenuEditor({
+                                    initialItems: @js($itemsArray),
+                                    pages: @js($pagesArray),
+                                    posts: @js($postsArray),
+                                    blogBase: @js($blogBase),
+                                })"
+                        x-init="init()">
+                        <div class="tp-metabox__title">Menu items</div>
+                        <div class="tp-metabox__body space-y-5">
+                            <div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+                                <div class="space-y-2 rounded border border-black/10 bg-white p-3">
+                                    <div class="text-sm font-semibold">Custom link</div>
+                                    <div class="space-y-2">
+                                        <input class="tp-input" placeholder="Title" x-model="addTitle" />
+                                        <input class="tp-input" placeholder="/path or https://..." x-model="addUrl" />
+                                        <select class="tp-select" x-model="addTarget">
+                                            <option value="">Same tab</option>
+                                            <option value="_blank">New tab</option>
+                                        </select>
+                                        <button type="button" class="tp-button-secondary" @click="addCustom()">
+                                            Add link
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 rounded border border-black/10 bg-white p-3">
+                                    <div class="text-sm font-semibold">Add page</div>
+                                    @if (count($pagesArray) === 0)
+                                        <div class="tp-muted text-xs">No published pages yet.</div>
+                                    @else
+                                        <div class="space-y-2">
+                                            <select class="tp-select" x-model="selectedPageId">
+                                                <option value="">Select a page...</option>
+                                                <template x-for="page in pages" :key="page.id">
+                                                    <option
+                                                        :value="page.id"
+                                                        x-text="page.title || 'Page #' + page.id"></option>
+                                                </template>
+                                            </select>
+                                            <button type="button" class="tp-button-secondary" @click="addFromPage()">
+                                                Add page
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="space-y-2 rounded border border-black/10 bg-white p-3">
+                                    <div class="text-sm font-semibold">Add post</div>
+                                    @if (count($postsArray) === 0)
+                                        <div class="tp-muted text-xs">No published posts yet.</div>
+                                    @else
+                                        <div class="space-y-2">
+                                            <select class="tp-select" x-model="selectedPostId">
+                                                <option value="">Select a post...</option>
+                                                <template x-for="post in posts" :key="post.id">
+                                                    <option
+                                                        :value="post.id"
+                                                        x-text="post.title || 'Post #' + post.id"></option>
+                                                </template>
+                                            </select>
+                                            <button type="button" class="tp-button-secondary" @click="addFromPost()">
+                                                Add post
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
-
-                            <div class="space-y-2 rounded border border-black/10 bg-white p-3">
-                                <div class="text-sm font-semibold">Add page</div>
-                                @if (count($pagesArray) === 0)
-                                    <div class="tp-muted text-xs">No published pages yet.</div>
-                                @else
-                                    <div class="space-y-2">
-                                        <select class="tp-select" x-model="selectedPageId">
-                                            <option value="">Select a page...</option>
-                                            <template x-for="page in pages" :key="page.id">
-                                                <option
-                                                    :value="page.id"
-                                                    x-text="page.title || 'Page #' + page.id"></option>
-                                            </template>
-                                        </select>
-                                        <button type="button" class="tp-button-secondary" @click="addFromPage()">
-                                            Add page
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="space-y-2 rounded border border-black/10 bg-white p-3">
-                                <div class="text-sm font-semibold">Add post</div>
-                                @if (count($postsArray) === 0)
-                                    <div class="tp-muted text-xs">No published posts yet.</div>
-                                @else
-                                    <div class="space-y-2">
-                                        <select class="tp-select" x-model="selectedPostId">
-                                            <option value="">Select a post...</option>
-                                            <template x-for="post in posts" :key="post.id">
-                                                <option
-                                                    :value="post.id"
-                                                    x-text="post.title || 'Post #' + post.id"></option>
-                                            </template>
-                                        </select>
-                                        <button type="button" class="tp-button-secondary" @click="addFromPost()">
-                                            Add post
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
 
                         <template x-if="items.length === 0">
                             <div class="tp-muted rounded border border-dashed border-black/15 bg-white p-4 text-sm">
@@ -260,14 +249,25 @@
                 </div>
             </div>
 
-            <div class="space-y-5 lg:sticky lg:top-6 lg:self-start">
-                <div class="tp-metabox">
-                    <div class="tp-metabox__title">Actions</div>
-                    <div class="tp-metabox__body space-y-3 text-sm">
-                        <button type="submit" class="tp-button-primary">Save Menu</button>
-                        <div class="tp-muted text-xs">Changes to locations affect the active theme.</div>
+                <div class="space-y-6 lg:sticky lg:top-6 lg:self-start">
+                    <div class="tp-metabox">
+                        <div class="tp-metabox__title">Actions</div>
+                        <div class="tp-metabox__body space-y-2 text-sm">
+                            <button type="submit" class="tp-button-primary w-full justify-center">Save Menu</button>
+                            <a href="{{ route('tp.menus.index') }}" class="tp-button-secondary w-full justify-center">
+                                Back
+                            </a>
+                            <form
+                                method="POST"
+                                action="{{ route('tp.menus.destroy', ['menu' => $menu->id]) }}"
+                                onsubmit="return confirm('Delete this menu? This cannot be undone.');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="tp-button-danger w-full justify-center">Delete</button>
+                            </form>
+                            <div class="tp-muted text-xs">Changes to locations affect the active theme.</div>
+                        </div>
                     </div>
-                </div>
 
                 @if (count($locationsArray) > 0)
                     <div class="tp-metabox">
@@ -320,9 +320,10 @@
                         </div>
                     </div>
                 @endif
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
     <script>
         document.addEventListener('alpine:init', () => {
