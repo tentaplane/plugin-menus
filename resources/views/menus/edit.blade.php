@@ -249,7 +249,7 @@
                 </div>
             </div>
 
-                <div class="space-y-6 lg:sticky lg:top-6 lg:self-start">
+            <div class="space-y-6 lg:sticky lg:top-6 lg:self-start">
                     <div class="tp-metabox">
                         <div class="tp-metabox__title">Actions</div>
                         <div class="tp-metabox__body space-y-2 text-sm">
@@ -257,14 +257,13 @@
                             <a href="{{ route('tp.menus.index') }}" class="tp-button-secondary w-full justify-center">
                                 Back
                             </a>
-                            <form
-                                method="POST"
-                                action="{{ route('tp.menus.destroy', ['menu' => $menu->id]) }}"
-                                onsubmit="return confirm('Delete this menu? This cannot be undone.');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="tp-button-danger w-full justify-center">Delete</button>
-                            </form>
+                            <button
+                                type="submit"
+                                form="delete-menu-form"
+                                class="tp-button-danger w-full justify-center"
+                                onclick="return confirm('Delete this menu? This cannot be undone.');">
+                                Delete
+                            </button>
                             <div class="tp-muted text-xs">Changes to locations affect the active theme.</div>
                         </div>
                     </div>
@@ -320,9 +319,18 @@
                         </div>
                     </div>
                 @endif
-                </div>
             </div>
-        </form>
+        </div>
+    </form>
+
+    <form
+        id="delete-menu-form"
+        method="POST"
+        action="{{ route('tp.menus.destroy', ['menu' => $menu->id]) }}"
+        class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
     </div>
 
     <script>
