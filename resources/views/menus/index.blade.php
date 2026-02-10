@@ -116,7 +116,8 @@
                 <div class="tp-muted text-xs">{{ number_format($menus->total()) }} menus</div>
                 <div class="flex-1"></div>
                 <div class="flex gap-2">
-                    <input name="s" value="{{ $search }}" class="tp-input w-full sm:w-64" placeholder="Search menus…" />
+                    <label class="sr-only" for="menus-search">Search menus</label>
+                    <input id="menus-search" name="s" value="{{ $search }}" class="tp-input w-full sm:w-64" placeholder="Search menus…" />
                     <input type="hidden" name="sort" value="{{ $sort }}" />
                     <input type="hidden" name="direction" value="{{ $direction }}" />
                     <button class="tp-button-secondary" type="submit">Search</button>
