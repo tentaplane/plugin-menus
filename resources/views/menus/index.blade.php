@@ -128,7 +128,7 @@
             <div class="tp-metabox__body tp-muted text-sm">No menus yet. Create your first one.</div>
         @else
             <div class="tp-table-wrap">
-                <table class="tp-table tp-table--sticky-head">
+                <table class="tp-table tp-table--responsive tp-table--sticky-head">
                     <thead class="tp-table__thead">
                         <tr>
                             <th class="tp-table__th">
@@ -168,15 +168,15 @@
                             @endphp
 
                             <tr class="tp-table__row">
-                                <td class="tp-table__td align-middle py-4">
+                                <td data-label="Name" class="tp-table__td align-middle py-4">
                                     <a class="tp-button-link" href="{{ route('tp.menus.edit', ['menu' => $menu->id]) }}">
                                         {{ $menu->name }}
                                     </a>
                                 </td>
-                                <td class="tp-table__td align-middle py-4">
+                                <td data-label="Key" class="tp-table__td align-middle py-4">
                                     <span class="tp-code">{{ $menu->slug }}</span>
                                 </td>
-                                <td class="tp-table__td align-middle py-4">
+                                <td data-label="Locations" class="tp-table__td align-middle py-4">
                                     @if ($locations === [])
                                         <span class="tp-muted text-xs">Not assigned</span>
                                     @else
@@ -192,13 +192,13 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td class="tp-table__td align-middle py-4">
+                                <td data-label="Items" class="tp-table__td align-middle py-4">
                                     <span class="rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-800">
                                         {{ $itemCount }}
                                     </span>
                                 </td>
-                                <td class="tp-table__td tp-muted align-middle py-4">{{ $menu->updated_at?->diffForHumans() ?? '—' }}</td>
-                                <td class="tp-table__td align-middle py-4">
+                                <td data-label="Updated" class="tp-table__td tp-muted align-middle py-4">{{ $menu->updated_at?->diffForHumans() ?? '—' }}</td>
+                                <td data-label="Actions" class="tp-table__td align-middle py-4">
                                     <div class="tp-muted flex justify-end gap-3 text-xs">
                                         <a class="tp-button-link" href="{{ route('tp.menus.edit', ['menu' => $menu->id]) }}">
                                             Edit
